@@ -4,7 +4,9 @@ var forIn = require('lodash.forin');
 
 function Type (env, descriptor) {
   // call new constructor if not already
-  if (!(this instanceof Type)) return new Type(env, schema);
+  if (!(this instanceof Type)) {
+    return new Type(env, descriptor);
+  }
 
   // save jjv environment
   this.env = env;
