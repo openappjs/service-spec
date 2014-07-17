@@ -31,7 +31,9 @@ Type.prototype.validate = function (obj) {
 };
 
 Type.prototype.context = function () {
+  // create context to return
   var context = {};
+
   // get prefixes
   forIn(this.prefixes, function (val, key) {
     if (typeof key === 'string' && key.length === 0) {
@@ -39,34 +41,39 @@ Type.prototype.context = function () {
     }
     context[key] = val;
   });
+
   // get top-level context
   if (this.schema.context) {
     context[this.schema.id] = this.schema.context;
   }
+
   // get property contexts
   forIn(this.schema.properties, function (propSchema, propName) {
     if (propSchema.context) {
       context[propName] = propSchema.context;
     }
   });
+
   // TODO merge context of nested objects
+  // TODO merge context of nested references
   return context;
 };
 
 function Types (env) {
+  // call new constructor if not already
   if (!(this instanceof Types)) return new Types(env);
+
+  // save jjv environment
+  this.env = env;
   
   // call Map constructor on this
   Map.call(this);
 
   // save Map.set
   this.__set = this.set;
-  // use our set function
+  // and use our set function
   this.set = this._set;
   delete this._set;
-
-  // save jjv environment
-  this.env = env;
 }
 inherits(Types, Map);
 
