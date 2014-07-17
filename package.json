@@ -1,0 +1,29 @@
+{
+  "name": "opentypes",
+  "version": "0.0.0",
+  "description": "OpenApp type registry",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/open-app/types"
+  },
+  "author": "open-app",
+  "license": "AGPLv3",
+  "bugs": {
+    "url": "https://github.com/open-app/types/issues"
+  },
+  "homepage": "https://github.com/open-app/types",
+  "dependencies": {
+    "es6-map": "^0.1.0",
+    "inherits": "^2.0.1",
+    "lodash.forin": "^2.4.1"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "jjv": "^1.0.0",
+    "mocha": "^1.20.1"
+  }
+}
