@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var jjv = require('jjv');
 
-var personDescriptor = {
+var person = {
   name: "Person",
   prefixes: {
     "": "http://schema.org/",
@@ -29,32 +29,25 @@ var personDescriptor = {
 
 describe("#types", function () {
   var env = jjv();
-  var Types;
-  var types;
+  var Type;
+  var types = {};
 
   it("should require module", function () {
-    Types = require('../');
-    expect(Types).to.exist;
+    Type = require('../');
+    expect(Type).to.exist;
   });
 
-  it("should create new types map", function () {
-    types = new Types(env);
-    expect(types).to.exist;
-    expect(types).to.have.property("env", env);
-  });
-
-  it("should add person type", function () {
-    types.set(personDescriptor);
-    var personType = types.get(personDescriptor.name);
+  it("should create person type", function () {
+    var personType = types[person.name] = Type(env, person);
     expect(personType).to.exist;
-    expect(personType).to.have.property("name", personDescriptor.name);
-    expect(personType).to.have.property("schema", personDescriptor.schema);
+    expect(personType).to.have.property("name", person.name);
+    expect(personType).to.have.property("schema", person.schema);
     expect(personType).to.have.property("env", env);
     expect(personType).to.have.property("validate");
     expect(personType).to.have.property("context");
   });
 
   it("should be idempotent", function () {
-    types.set(personDescriptor);
+    Type(env, person);
   });
 })
