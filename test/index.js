@@ -5,8 +5,8 @@ var person = {
   name: "Person",
   prefixes: {
     "": "http://schema.org/",
-    "foaf": "http://xmlns.com/foaf/0.1/",
-    "org": "http://www.w3.org/TR/vocab-org#",
+    foaf: "http://xmlns.com/foaf/0.1/",
+    org: "http://www.w3.org/TR/vocab-org#",
   },
   schema: {
     type: 'object',
