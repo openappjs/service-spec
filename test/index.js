@@ -50,4 +50,17 @@ describe("#types", function () {
   it("should be idempotent", function () {
     Type(env, person);
   });
+
+  describe("context()", function () {
+    it("should have correct person context", function () {
+      expect(types[person.name].context())
+      .to.deep.equal({
+        "@vocab": "http://schema.org/",
+        foaf: "http://xmlns.com/foaf/0.1/",
+        org: "http://www.w3.org/TR/vocab-org#",
+        name: "foaf:name",
+        memberships: "org:hasMembership",
+      });
+    });
+  });
 })
