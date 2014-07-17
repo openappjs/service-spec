@@ -59,8 +59,13 @@ function Types (env) {
 }
 inherits(Types, Map);
 
-Types.prototype._set = function (schema) {
-  var type = new Type(this.env, schema);
+Types.prototype._set = function (type) {
+
+  // if not instanceof Type, make into type
+  if (!(type instanceof Type)) {
+    type = new Type(this.env, type);
+  }
+
   return this.__set(type.name, type);
 };
 
