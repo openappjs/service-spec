@@ -1,25 +1,27 @@
 var expect = require('chai').expect;
 var jjv = require('jjv');
 
-var personSchema = {
-  id: "Person",
+var personDescriptor = {
+  name: "Person",
   prefixes: {
     "": "http://schema.org/",
     "foaf": "http://xmlns.com/foaf/0.1/",
     "org": "http://www.w3.org/TR/vocab-org#",
   },
-  type: 'object',
-  properties: {
-    name: {
-      type: "string",
-      context: "foaf:name",
-    },
-    memberships: {
-      type: "array",
-      context: "org:hasMembership",
-      items: {
-        reverse: "member",
-        $ref: "Membership",
+  schema: {
+    type: 'object',
+    properties: {
+      name: {
+        type: "string",
+        context: "foaf:name",
+      },
+      memberships: {
+        type: "array",
+        context: "org:hasMembership",
+        items: {
+          reverse: "member",
+          $ref: "Membership",
+        },
       },
     },
   },
@@ -41,11 +43,11 @@ describe("#types", function () {
   });
 
   it("should add person type", function () {
-    types.set(personSchema);
-    var personType = types.get("Person");
+    types.set(personDescriptor);
+    var personType = types.get(personDescriptor.name);
     expect(personType).to.exist;
-    expect(personType).to.have.property("name", "Person");
-    expect(personType).to.have.property("schema", personSchema);
+    expect(personType).to.have.property("name", personDescriptor.name);
+    expect(personType).to.have.property("schema", personDescriptor.schema);
     expect(personType).to.have.property("env", env);
     expect(personType).to.have.property("validate");
     expect(personType).to.have.property("context");

@@ -2,17 +2,28 @@ var inherits = require('inherits');
 var Map = require('es6-map');
 var forIn = require('lodash.forin');
 
-function Type (env, schema) {
-  console.log(schema);
+function Type (env, descriptor) {
+  // call new constructor if not already
   if (!(this instanceof Type)) return new Type(env, schema);
 
   // save jjv environment
   this.env = env;
-  // save schema and derive type name
-  this.schema = schema;
-  this.name = schema.id;
+
+  // save name
+  this.name = descriptor.name;
+
+  // save prefixes
+  this.prefixes = descriptor.prefixes;
+
+  // save schema
+  this.schema = descriptor.schema;
   // add schema to jjv environment
-  env.addSchema(schema.id, schema);
+  env.addSchema(this.name, this.schema);
+
+  // TODO types
+  // TODO type coercions
+  // TODO checks
+  // TODO formats
 }
 
 Type.prototype.validate = function (obj) {
@@ -22,7 +33,7 @@ Type.prototype.validate = function (obj) {
 Type.prototype.context = function () {
   var context = {};
   // get prefixes
-  forIn(this.schema.prefixes, function (val, key) {
+  forIn(this.prefixes, function (val, key) {
     if (typeof key === 'string' && key.length === 0) {
       key = "@vocab";
     }
