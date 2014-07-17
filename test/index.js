@@ -53,4 +53,8 @@ describe("#types", function () {
     expect(personType).to.have.property("validate");
     expect(personType).to.have.property("context");
   });
+
+  it("should be idempotent", function () {
+    types.set(personDescriptor);
+  });
 })
