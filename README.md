@@ -4,4 +4,4 @@ describe [linked data](http://www.w3.org/DesignIssues/Abstractions.html) types i
 
 ### work in progress
 
-see the tests for more info.
+see [types](https://github.com/open-app/types) for more info.
