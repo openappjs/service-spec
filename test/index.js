@@ -51,8 +51,8 @@ describe("#oa-type", function () {
     Type(env, person);
   });
 
-  describe("context()", function () {
-    it("should have correct person context", function () {
+  describe(".context()", function () {
+    it("of personType should be correct", function () {
       expect(types[person.name].context())
       .to.deep.equal({
         "@vocab": "http://schema.org/",
