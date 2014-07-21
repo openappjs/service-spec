@@ -63,4 +63,10 @@ describe("#types", function () {
       });
     });
   });
-})
+
+  describe("Type.isType()", function () {
+    it("of personType should be true", function () {
+      expect(Type.isType(person)).to.be.true;
+    });
+  });
+});
