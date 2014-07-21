@@ -27,7 +27,7 @@ var person = {
   },
 };
 
-describe("#types", function () {
+describe("#oa-type", function () {
   var env = jjv();
   var Type;
   var types = {};
