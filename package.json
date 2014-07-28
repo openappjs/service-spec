@@ -19,8 +19,7 @@
   "dependencies": {
     "debug": "^1.0.4",
     "deepest-merge": "^0.1.1",
-    "lodash": "^2.4.1",
-    "lodash.forin": "^2.4.1"
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",

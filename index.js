@@ -1,5 +1,5 @@
 var debug = require('debug')('oa-type');
-var forIn = require('lodash.forin');
+var _ = require('lodash');
 
 var merge = require('./lib/merge');
 
@@ -39,7 +39,7 @@ Type.prototype.context = function () {
   var context = {};
 
   // get prefixes
-  forIn(this.schema.prefixes, function (val, key) {
+  _.forIn(this.merged.prefixes, function (val, key) {
     if (typeof key === 'string' && key.length === 0) {
       key = "@vocab";
     }
@@ -47,12 +47,12 @@ Type.prototype.context = function () {
   });
 
   // get top-level context
-  if (this.schema.context) {
+  if (this.merged.context) {
     context[this.schema.id] = this.schema.context;
   }
 
   // get property contexts
-  forIn(this.schema.properties, function (propSchema, propName) {
+  _.forIn(this.merged.properties, function (propSchema, propName) {
     if (propSchema.context) {
       context[propName] = propSchema.context;
     }
