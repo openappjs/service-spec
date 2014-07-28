@@ -40,6 +40,7 @@ describe("#oa-type", function () {
     expect(personType).to.exist;
     expect(personType).to.have.property("id", person.id);
     expect(personType).to.have.property("schema", person);
+    expect(personType.merged).to.deep.equal(person);
     expect(personType).to.have.property("env", env);
     expect(personType).to.have.property("validate");
     expect(personType).to.have.property("context");

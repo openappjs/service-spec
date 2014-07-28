@@ -1,6 +1,8 @@
 var debug = require('debug')('oa-type');
 var forIn = require('lodash.forin');
 
+var merge = require('./lib/merge');
+
 function Type (env, schema) {
   debug("constructor", env, schema);
   // call new constructor if not already
@@ -17,6 +19,8 @@ function Type (env, schema) {
   // save id
   this.id = schema.id;
 
+  // save merged schema
+  this.merged = merge(env, schema);
 
   // add schema to jjv environment
   env.addSchema(this.id, this.schema);
