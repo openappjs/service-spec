@@ -63,6 +63,6 @@ Type.prototype.context = function () {
   return context;
 };
 
-module.exports = Type;
+Type.isType = require('./isType');
 
-module.exports.isType = require('./isType');
+module.exports = Type;
