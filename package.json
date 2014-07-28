@@ -4,7 +4,7 @@
   "description": "OpenApp abstract type",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive test"
+    "test": "DEBUG=* mocha --recursive test"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/open-app/type",
   "dependencies": {
+    "debug": "^1.0.4",
     "lodash.forin": "^2.4.1"
   },
   "devDependencies": {

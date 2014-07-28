@@ -1,6 +1,8 @@
+var debug = require('debug')('oa-type');
 var forIn = require('lodash.forin');
 
 function Type (env, schema) {
+  debug("constructor", env, schema);
   // call new constructor if not already
   if (!(this instanceof Type)) {
     return new Type(env, schema);
