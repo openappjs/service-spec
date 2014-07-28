@@ -1,3 +1,11 @@
 module.exports = function (obj) {
-  return !!(obj.name && obj.schema)
-}
+  return !!(
+    obj.id && (
+      obj.allOf ||
+      obj.oneOf ||
+      obj.anyOf ||
+      obj.not ||
+      obj.properties
+    )
+  );
+};

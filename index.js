@@ -1,25 +1,23 @@
 var forIn = require('lodash.forin');
 
-function Type (env, descriptor) {
+function Type (env, schema) {
   // call new constructor if not already
   if (!(this instanceof Type)) {
-    return new Type(env, descriptor);
+    return new Type(env, schema);
   }
 
   // save jjv environment
   this.env = env;
 
-  // save name
-  this.name = descriptor.name;
+  // save raw schema
+  this.schema = schema;
 
-  // save prefixes
-  this.prefixes = descriptor.prefixes;
+  // save id
+  this.id = schema.id;
 
-  // save schema
-  this.schema = descriptor.schema;
+
   // add schema to jjv environment
-  env.addSchema(this.name, this.schema);
-
+  env.addSchema(this.id, this.schema);
   // TODO types
   // TODO type coercions
   // TODO checks
@@ -27,7 +25,7 @@ function Type (env, descriptor) {
 }
 
 Type.prototype.validate = function (obj) {
-  return this.env.validate(this.name, obj)
+  return this.env.validate(this.id, obj)
 };
 
 Type.prototype.context = function () {
@@ -35,7 +33,7 @@ Type.prototype.context = function () {
   var context = {};
 
   // get prefixes
-  forIn(this.prefixes, function (val, key) {
+  forIn(this.schema.prefixes, function (val, key) {
     if (typeof key === 'string' && key.length === 0) {
       key = "@vocab";
     }
