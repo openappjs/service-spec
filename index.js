@@ -60,7 +60,11 @@ Type.prototype.context = function () {
 
   // TODO merge context of nested objects
   // TODO merge context of nested references
-  return context;
+
+  // strip when key, value is the same
+  return _.omit(context, function (value, key) {
+    return key === value;
+  });
 };
 
 Type.isType = require('./isType');
