@@ -24,10 +24,10 @@ function Type (env, schema) {
 
   // add schema to jjv environment
   env.addSchema(this.id, this.schema);
-  // TODO types
-  // TODO type coercions
-  // TODO checks
-  // TODO formats
+  // TODO add types
+  // TODO add type coercions
+  // TODO add checks
+  // TODO add formats
 }
 
 Type.prototype.validate = function (obj) {
