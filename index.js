@@ -48,7 +48,7 @@ Type.prototype.context = function () {
 
   // get top-level context
   if (this.merged.context) {
-    context[this.schema.id] = this.schema.context;
+    context[this.schema.id] = this.merged.context;
   }
 
   // get property contexts
