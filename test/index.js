@@ -68,4 +68,12 @@ describe("#oa-type", function () {
       expect(Type.isType(person)).to.be.true;
     });
   });
+
+  describe("relations", function () {
+    it("of personType should be { 'memberships': {} }", function () {
+      expect(types[person.id].relations).to.deep.equal({
+        memberships: person.properties.memberships,
+      });
+    });
+  });
 });

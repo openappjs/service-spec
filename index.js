@@ -28,6 +28,16 @@ function Type (env, schema) {
   // TODO add type coercions
   // TODO add checks
   // TODO add formats
+  
+  // store relations
+  this.relations = _.omit(this.schema.properties, function (value, key) {
+    if (value && value.$ref) {
+      return false;
+    } else if (value && value.items && value.items.$ref) {
+      return false
+    }
+    return true;
+  });
 }
 
 Type.prototype.validate = function (obj) {
