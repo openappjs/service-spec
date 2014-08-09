@@ -31,13 +31,8 @@ function Type (env, schema) {
   
   // store relations
   this.relations = _.omit(this.schema.properties, function (value, key) {
-    if (value && value.$ref) {
-      return false;
-    } else if (value && value.items && value.items.$ref) {
-      return false
-    }
-    return true;
-  });
+    return !this.isRelation(value);
+  }.bind(this));
 }
 
 Type.prototype.validate = function (obj) {
@@ -75,6 +70,27 @@ Type.prototype.context = function () {
   return _.omit(context, function (value, key) {
     return key === value;
   });
+};
+
+Type.prototype.isRelation = function isRelation (value) {
+  // if no value, then not relation
+  if (!value) return false;
+
+  // if array of items, recurse into items schema
+  if (value.type === 'array' && value.items) {
+    return isRelation(value.items);
+  }
+  // if schema composed of many schemas, recurse into each and combine with OR
+  if (value.allOf || value.anyOf || value.oneOf) {
+    return _.some(value.allOf || value.anyOf || value.oneOf, isRelation)
+  }
+
+  // if has reference, it is relation!
+  if (value.$ref) {
+    return true;
+  }
+  // must not be relation
+  return false;
 };
 
 Type.isType = require('./isType');

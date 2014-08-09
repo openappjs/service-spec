@@ -25,6 +25,26 @@ var person = {
   },
 };
 
+var membership = {
+  id: "Membership",
+  prefixes: {
+    "": "http://schema.org/",
+    foaf: "http://xmlns.com/foaf/0.1/",
+    org: "http://www.w3.org/TR/vocab-org#",
+  },
+  type: 'object',
+  properties: {
+    member: {
+      context: "org:member",
+      oneOf: [{
+        $ref: "Person",
+      }, {
+        $ref: "Group",
+      }],
+    },
+  },
+};
+
 describe("#oa-type", function () {
   var env = jjv();
   var Type;
@@ -50,6 +70,17 @@ describe("#oa-type", function () {
     Type(env, person);
   });
 
+  it("should create membership type", function () {
+    var membershipType = types[membership.id] = Type(env, membership);
+    expect(membershipType).to.exist;
+    expect(membershipType).to.have.property("id", membership.id);
+    expect(membershipType).to.have.property("schema", membership);
+    expect(membershipType.merged).to.deep.equal(membership);
+    expect(membershipType).to.have.property("env", env);
+    expect(membershipType).to.have.property("validate");
+    expect(membershipType).to.have.property("context");
+  });
+
   describe(".context()", function () {
     it("of personType should be correct", function () {
       expect(types[person.id].context())
@@ -73,6 +104,12 @@ describe("#oa-type", function () {
     it("of personType should be { 'memberships': {} }", function () {
       expect(types[person.id].relations).to.deep.equal({
         memberships: person.properties.memberships,
+      });
+    });
+
+    it("of membershipType should be { 'member': {} }", function () {
+      expect(types[membership.id].relations).to.deep.equal({
+        member: membership.properties.member,
       });
     });
   });
