@@ -1,61 +1,66 @@
-var debug = require('debug')('oa-type');
-var jjv = require('jjv');
-var validUrl = require('valid-url');
-var _ = require('lodash');
+var debug = require('debug')('entity-schema');
 
-var isSchema = require('schema-is-schema');
-var schemaDeRef = require('schema-deref');
-var schemaHasRef = require('schema-has-ref');
-var schemaJsonldContext = require('schema-jsonld-context');
-var schemaPrefixUri = require('schema-prefix-uri');
-
-function Type (options) {
-  debug("constructor", options);
+function EntitySchema (id, schema, options) {
   // call new constructor if not already
-  if (!(this instanceof Type)) {
-    return new Type(options);
+  if (!(this instanceof EntitySchema)) {
+    return new EntitySchema(id, schema, options);
   }
 
-  var schema = schemaPrefixUri(options.base, options.schema);  
+  debug("constructor", id, schema, options);
 
-  var schemaErrs = isSchema(schema);
-  if (schemaErrs !== true) {
-    var err = new Error("options.schema is not a valid schema");
-    err.errors = schemaErrs;
+  // if
+  if (
+    // first argument is an object
+    typeof id === 'object'
+    // and it has id and schema properties
+    && id.id && id.schema
+  ) {
+    // split up single arg properties into init args
+    init.call(this, id.id, id.schema, id.options);
+  }
+  // otherwise
+  else {
+    // init using given args
+    init.call(this, id, schema, options);
+  }
+}
+
+function init (id, schema, options) {
+  debug("init", id, schema, options);
+
+  // check id
+  if (typeof id !== 'string') {
+    var err = new Error('id given is not a string.')
+    err.id = id;
     throw err;
   }
 
-  // save raw schema
-  this.schema = schema;
   // save id
-  this.id = this.schema.id;
+  this.id = id;
 
-  // save jjv environment
-  this.env = options.env || jjv();
+  // check schema
+  if (typeof schema !== 'object') {
+    var err = new Error('schema given is not an object.')
+    err.schema = schema;
+    throw err;
+  }
 
-  // add schema to jjv environment
-  this.env.addSchema(this.id, this.schema);
-  // TODO add types
-  // TODO add type coercions
-  // TODO add checks
-  // TODO add formats
+  // save schema
+  this.schema = schema;
   
-  // store relations
-  this.relations = _.omit(this.schema.properties, function (value, key) {
-    return !schemaHasRef(value);
-  }.bind(this));
+  // save options
+  // with default of empty object
+  this.options = options || {};
 }
 
-Type.prototype.validate = function (obj) {
-  return this.env.validate(this.id, obj)
-};
+// prototype function to handle plugin functions
+EntitySchema.prototype.use = function _EntitySchema_use (plugin) {
+  debug("use", plugin);
 
-Type.prototype.context = function () {
-  return schemaJsonldContext(
-    schemaDeRef(this.env.schema, this.schema)
-  );
+  plugin.call(this, this);
 }
 
-Type.isType = require('./isType');
+// class function for checking EntitySchema's
+EntitySchema.isEntitySchema = require('./isEntitySchema');
 
-module.exports = Type;
+module.exports = EntitySchema;
