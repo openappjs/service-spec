@@ -1,8 +1,8 @@
 var expect = require('chai').expect;
 
 var person = {
-  id: "Person",
   schema: {
+    id: "Person",
     prefixes: {
       "": "http://schema.org/",
       foaf: "http://xmlns.com/foaf/0.1/",
@@ -37,9 +37,8 @@ describe("#EntitySchema", function () {
   });
 
   it("should create person schema", function () {
-    var personSchema = EntitySchema(person);
+    var personSchema = EntitySchema(person.schema);
     expect(personSchema).to.exist;
-    expect(personSchema).to.have.property("id", person.id);
     expect(personSchema).to.have.property("schema", person.schema);
     expect(personSchema).to.have.property("options")
       .that.deep.equals({});
@@ -50,7 +49,7 @@ describe("#EntitySchema", function () {
     var personSchema;
 
     before(function () {
-      personSchema = EntitySchema(person);
+      personSchema = EntitySchema(person.schema);
     });
 
     it("of personSchema should be true", function () {
