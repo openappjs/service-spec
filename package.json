@@ -1,23 +1,24 @@
 {
-  "name": "entity-schema",
+  "name": "service-spec",
   "version": "0.3.0",
-  "description": "pluggable system for using schemas of entities",
+  "description": "pluggable system for using specs of service",
   "main": "index.js",
   "scripts": {
     "test": "DEBUG=* mocha --recursive test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/openappjs/entity-schema"
+    "url": "git://github.com/openappjs/service-spec"
   },
   "author": "ahdinosaur",
   "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/openappjs/entity-schema/issues"
+    "url": "https://github.com/openappjs/service-spec/issues"
   },
-  "homepage": "https://github.com/openappjs/entity-schema",
+  "homepage": "https://github.com/openappjs/service-spec",
   "dependencies": {
-    "debug": "^1.0.4"
+    "debug": "^1.0.4",
+    "entity-schema": "git://github.com/openappjs/entity-schema#0.6.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

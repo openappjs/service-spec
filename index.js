@@ -1,36 +1,39 @@
-var debug = require('debug')('entity-schema');
+var debug = require('debug')('service-spec');
 
-function EntitySchema (schema, options) {
+function ServiceSpec (spec) {
   // call new constructor if not already
-  if (!(this instanceof EntitySchema)) {
-    return new EntitySchema(schema, options);
+  if (!(this instanceof ServiceSpec)) {
+    return new ServiceSpec(spec);
   }
 
-  debug("constructor", schema, options);
+  debug("constructor", spec);
 
-  // check schema
-  if (typeof schema !== 'object') {
-    var err = new Error('schema given is not an object.')
-    err.schema = schema;
+  // check spec
+  if (!ServiceSpec.isServiceSpec(spec)) {
+    var err = new Error('spec given is not a spec.')
+    err.spec = spec;
     throw err;
   }
 
-  // save schema
-  this.schema = schema;
+  // save id
+  this.id = spec.id;
+  
+  // save methods
+  this.methods = spec.methods;
   
   // save options
   // with default of empty object
-  this.options = options || {};
+  this.options = spec.options || {};
 }
 
 // prototype function to handle plugin functions
-EntitySchema.prototype.use = function _EntitySchema_use (plugin) {
+ServiceSpec.prototype.use = function _ServiceSpec_use (plugin) {
   debug("use", plugin);
 
   plugin.call(this, this);
 }
 
-// class function for checking EntitySchema's
-EntitySchema.isEntitySchema = require('./isEntitySchema');
+// class function for checking ServiceSpec's
+ServiceSpec.isServiceSpec = require('./isServiceSpec');
 
-module.exports = EntitySchema;
+module.exports = ServiceSpec;

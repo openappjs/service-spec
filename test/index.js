@@ -1,59 +1,109 @@
 var expect = require('chai').expect;
 
-var person = {
-  schema: {
-    id: "Person",
-    prefixes: {
-      "": "http://schema.org/",
-      foaf: "http://xmlns.com/foaf/0.1/",
-      org: "http://www.w3.org/TR/vocab-org#",
+var EntitySchema = require('entity-schema');
+
+var personSchema = EntitySchema({
+  id: "Person",
+  properties: {
+    name: {
+      type: "string",
     },
-    type: 'object',
-    properties: {
-      name: {
-        type: "string",
-        context: "foaf:name",
-      },
-      memberships: {
-        type: "array",
-        context: "org:hasMembership",
-        items: {
-          reverse: "member",
-          $ref: "Membership",
+  },
+});
+
+var peopleSpec = {
+  id: "People",
+  methods: {
+    find: {
+      input: {
+        query: {
+          $ref: "Person",
         },
       },
+      output: {
+        people: {
+          type: "array",
+          items: {
+            $ref: "Person",
+          },
+        },
+      },
+    },
+    get: {
+      input: {
+        id: {
+          type: "string",
+        },
+      },
+      output: {
+        person: {
+          $ref: "Person",
+        },
+      },
+    },
+    create: {
+      input: {
+        person: {
+          $ref: "Person",
+        },
+      },
+      output: {
+        person: {
+          $ref: "Person",
+        },
+      },
+    },
+    update: {
+      input: {
+        person: {
+          $ref: "Person",
+        },
+      },
+      output: {
+        person: {
+          $ref: "Person",
+        },
+      },
+    },
+    remove: {
+      input: {
+        id: {
+          type: "string",
+        },
+      },
+      output: {},
     },
   },
 };
 
-describe("#EntitySchema", function () {
-  var EntitySchema;
+describe("#ServiceSpec", function () {
+  var ServiceSpec;
 
   it("should require module", function () {
-    EntitySchema = require('../');
-    expect(EntitySchema).to.exist;
-    expect(EntitySchema).to.have.property("isEntitySchema");
-    expect(EntitySchema.isEntitySchema).to.be.a('function');
+    ServiceSpec = require('../');
+    expect(ServiceSpec).to.exist;
+    expect(ServiceSpec).to.have.property("isServiceSpec");
+    expect(ServiceSpec.isServiceSpec).to.be.a('function');
   });
 
-  it("should create person schema", function () {
-    var personSchema = EntitySchema(person.schema);
-    expect(personSchema).to.exist;
-    expect(personSchema).to.have.property("schema", person.schema);
-    expect(personSchema).to.have.property("options")
+  it("should create person service spec", function () {
+    var personServiceSpec = ServiceSpec(peopleSpec)
+    expect(personServiceSpec).to.exist;
+    expect(personServiceSpec).to.have.property("methods", peopleSpec.methods);
+    expect(personServiceSpec).to.have.property("options")
       .that.deep.equals({});
-    expect(personSchema).to.have.property("use", EntitySchema.prototype.use);
+    expect(personServiceSpec).to.have.property("use", ServiceSpec.prototype.use);
   });
 
-  describe("Type.isType()", function () {
-    var personSchema;
+  describe("ServiceSpec.isServiceSpec()", function () {
+    var personServiceSpec;
 
     before(function () {
-      personSchema = EntitySchema(person.schema);
+      personServiceSpec = ServiceSpec(peopleSpec);
     });
 
-    it("of personSchema should be true", function () {
-      expect(EntitySchema.isEntitySchema(personSchema)).to.be.true;
+    it("of personServiceSpec should be true", function () {
+      expect(ServiceSpec.isServiceSpec(personServiceSpec)).to.be.true;
     });
   });
 });

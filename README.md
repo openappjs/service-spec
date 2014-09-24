@@ -1,5 +1,5 @@
-# entity-schema
+# service-spec
 
-pluggable system for using schemas of entities
+pluggable system for using specs of services
 
 ### work in progress
